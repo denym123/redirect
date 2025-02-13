@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>App Agenda Fishing</title>
+
+    <meta property="og:title" content="Fetec - Matrículas">
+    <meta property="og:description" content="Matrículas da fetec.">
+    <meta property="og:url" content="https://play.google.com/store/apps/details?id=br.com.ae3tecnologia.enrollment_fetec">
+    <meta property="og:type" content="website">
+
+    <script>
+        function redirectToStore() {
+            const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+
+            if (/android/i.test(userAgent)) {
+                window.location.href = "https://play.google.com/store/apps/details?id=br.com.ae3tecnologia.enrollment_fetec";
+            } else if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+                window.location.href = "https://apps.apple.com/br/app/matr%C3%ADcula-online-fetec/id6741228997?l=en-GB";
+            } else {
+                window.location.href = "https://matriculaonline.boavista.rr.gov.br/";
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", redirectToStore);
+    </script>
+
+</head>
+<body>
+<h1>Você está sendo redirecionado para a loja...</h1>
+</body>
+</html>
