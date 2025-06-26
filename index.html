@@ -1,33 +1,1053 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>App Agenda Fishing</title>
+    <title>PetSmartCare - Seu Pet Conectado</title>
+    <!-- Carrega o Tailwind CSS para estilização rápida e responsiva -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Carrega a fonte Inter do Google Fonts para uma tipografia limpa -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Carrega a biblioteca Font Awesome para ícones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        /* Define a fonte Inter para todo o corpo do documento */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* Cor de fundo suave, quase branco */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        /* Estilo da moldura do celular para o protótipo */
+        .mobile-frame {
+            width: 100%;
+            max-width: 420px; /* Largura máxima para simular um celular */
+            background-color: #ffffff;
+            border-radius: 2.5rem; /* Bordas bem arredondadas */
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15); /* Sombra mais acentuada para profundidade */
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 780px; /* Altur fixa para simular um dispositivo móvel */
+        }
+        /* Estilo do cabeçalho do aplicativo */
+        .header {
+            background-color: #3B82F6; /* Azul primário */
+            color: white;
+            padding: 1.5rem 1.25rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            position: relative;
+            z-index: 10;
+        }
+        /* Área de conteúdo rolável */
+        .content-area {
+            flex-grow: 1;
+            padding: 1rem;
+            overflow-y: auto; /* Habilita rolagem vertical */
+            -webkit-overflow-scrolling: touch; /* Rolagem suave em iOS */
+        }
+        /* Estilo da barra de navegação inferior */
+        .nav-bar {
+            background-color: #ffffff;
+            border-top: 1px solid #e2e8f0; /* Borda superior sutil */
+            padding: 0.75rem 0;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            box-shadow: 0 -2px 8px rgba(0,0,0,0.05); /* Sombra para destacar */
+            position: relative;
+            z-index: 10;
+        }
+        /* Estilo para cada item da navegação */
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.25rem;
+            font-size: 0.75rem;
+            color: #64748B; /* Cinza neutro */
+            cursor: pointer;
+            transition: color 0.2s ease-in-out;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+        }
+        /* Estilo para o item de navegação ativo */
+        .nav-item.active {
+            color: #3B82F6; /* Azul primário */
+            font-weight: 600;
+            background-color: #EFF6FF; /* Fundo azul claro para o ativo */
+        }
+        .nav-item i {
+            font-size: 1.3rem;
+            margin-bottom: 0.1rem;
+        }
+        /* Classe para ocultar páginas ou elementos */
+        .hidden-page {
+            display: none;
+        }
+        /* Estilo de um card genérico */
+        .card {
+            background-color: #f0f4f8; /* Fundo de card mais suave */
+            border-radius: 1rem;
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04); /* Sombra mais leve */
+        }
+        /* Estilo do botão primário */
+        .button-primary {
+            background-color: #3B82F6; /* Azul primário */
+            color: white;
+            padding: 0.85rem 1.5rem;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            text-align: center;
+            cursor: pointer;
+            transition: background-color 0.2s ease-in-out;
+            box-shadow: 0 4px 10px rgba(59, 130, 246, 0.2); /* Sombra com cor do botão */
+        }
+        .button-primary:hover {
+            background-color: #2563EB; /* Azul mais escuro no hover */
+        }
+        /* Estilo de um card de alerta */
+        .alert-card {
+            background-color: #FEF3C7; /* Amarelo claro para alertas */
+            color: #92400E;
+            border: 1px solid #FCD34D;
+            padding: 1rem;
+            border-radius: 0.75rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 0.9rem;
+        }
+        .alert-card i {
+            color: #FBBF24; /* Amarelo vibrante para o ícone */
+            font-size: 1.4rem;
+        }
+        /* Estilos específicos para o mapa simulado */
+        .map-container {
+            position: relative;
+            width: 100%;
+            height: 250px; /* Altura um pouco maior para o mapa */
+            border-radius: 1rem;
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            background-color: #E0E0E0; /* Cor de fundo para o placeholder do mapa */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #607D8B;
+            font-size: 1.2rem;
+            font-weight: 500;
+        }
 
-    <meta property="og:title" content="Fetec - Matrículas">
-    <meta property="og:description" content="Matrículas da fetec.">
-    <meta property="og:url" content="https://play.google.com/store/apps/details?id=br.com.ae3tecnologia.enrollment_fetec">
-    <meta property="og:type" content="website">
+        /* Estilos para o overlay/modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7); /* Fundo escuro semi-transparente */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 1.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            width: 90%;
+            max-width: 380px;
+            transform: translateY(20px); /* Animação de entrada */
+            transition: transform 0.3s ease;
+            text-align: center;
+        }
+        .modal-overlay.active .modal-content {
+            transform: translateY(0);
+        }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        .modal-header h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #334155;
+        }
+        .modal-close-btn {
+            background: none;
+            border: none;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: #94A3B8;
+        }
+        .modal-body p {
+            margin-bottom: 1.5rem;
+            color: #475569;
+            line-height: 1.5;
+        }
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.75rem;
+        }
+        .modal-footer button {
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem;
+            font-weight: 600;
+        }
+        .btn-secondary {
+            background-color: #E2E8F0;
+            color: #475569;
+        }
+        .btn-secondary:hover {
+            background-color: #CBD5E1;
+        }
+
+        /* Estilos específicos para a tela de login */
+        #loginPage {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+            height: 100%; /* Garante que ocupe a altura total da content-area */
+            overflow-y: auto; /* Permite rolagem se o conteúdo for maior que a tela em dispositivos pequenos */
+            -webkit-overflow-scrolling: touch;
+        }
+        #loginPage .input-group {
+            width: 100%;
+            padding: 0 1rem; /* Adiciona padding para os inputs */
+            margin-bottom: 1rem;
+        }
+        #loginPage .button-full-width {
+            width: calc(100% - 2rem); /* 100% menos o padding lateral */
+            margin: 0 1rem;
+        }
+
+        /* Estilos para o InstaDog */
+        .insta-post {
+            background-color: #ffffff;
+            border-radius: 1rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+        }
+        .insta-post img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            display: block;
+        }
+        .insta-post-header {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid #f0f4f8;
+        }
+        .insta-post-header img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 0.75rem;
+            object-fit: cover;
+            border: 2px solid #BFDBFE;
+        }
+        .insta-post-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            border-top: 1px solid #f0f4f8;
+        }
+        .insta-post-actions .icon-group {
+            display: flex;
+            gap: 1rem;
+        }
+        .insta-post-actions i {
+            font-size: 1.4rem;
+            color: #64748B;
+            cursor: pointer;
+            transition: color 0.2s ease-in-out;
+        }
+        .insta-post-actions i.fa-heart.liked {
+            color: #EF4444; /* Red for liked heart */
+        }
+        .insta-post-actions i:hover {
+            color: #3B82F6;
+        }
+        .insta-post-caption {
+            padding: 0.75rem 1rem;
+            font-size: 0.95rem;
+            color: #334155;
+            line-height: 1.4;
+        }
+        .insta-post-caption .username {
+            font-weight: 600;
+            color: #1E293B;
+            margin-right: 0.25rem;
+        }
+        .like-count {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #475569;
+            margin-left: 0.5rem;
+        }
+        /* Estilo para o banner da coleira */
+        .collar-banner {
+            background-color: #DCFCE7; /* Verde claro */
+            border-radius: 1rem;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            box-shadow: 0 4px 12px rgba(0, 128, 0, 0.08); /* Sombra sutil com tom verde */
+            border: 1px solid #A7F3D0; /* Borda sutil */
+        }
+        .collar-banner img {
+            width: 80px;
+            height: 80px;
+            object-fit: contain; /* Garante que a coleira seja exibida inteira */
+            border-radius: 0.5rem;
+        }
+        .collar-banner-content h4 {
+            font-weight: 700;
+            color: #10B981; /* Verde forte */
+            margin-bottom: 0.25rem;
+        }
+        .collar-banner-content p {
+            font-size: 0.85rem;
+            color: #34D399; /* Verde mais suave */
+            line-height: 1.3;
+        }
+        .collar-banner-button {
+            background-color: #10B981; /* Verde primário */
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            font-size: 0.8rem;
+            text-align: center;
+            margin-top: 0.75rem;
+            display: inline-block; /* Permite espaçamento e largura ajustada */
+            transition: background-color 0.2s ease-in-out;
+        }
+        .collar-banner-button:hover {
+            background-color: #059669; /* Verde mais escuro no hover */
+        }
+
+        /* Estilos para a página da Loja (Marketplace) */
+        .shop-banner {
+            width: 100%;
+            height: 150px;
+            background-color: #A7F3D0; /* Fundo verde claro */
+            background-image: url('https://placehold.co/400x150/A7F3D0/10B981?text=OFERTAS+EXCLUSIVAS');
+            background-size: cover;
+            background-position: center;
+            border-radius: 1rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+        }
+
+        .product-card {
+            background-color: #ffffff;
+            border-radius: 1rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            padding: 0.75rem;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .product-card img {
+            width: 100%;
+            height: 120px;
+            object-fit: contain;
+            border-radius: 0.75rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .product-card .product-name {
+            font-weight: 600;
+            color: #334155;
+            font-size: 0.95rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .product-card .product-price {
+            font-weight: 700;
+            color: #22C55E; /* Verde para preço */
+            font-size: 1.1rem;
+        }
+
+        .product-card .add-to-cart-button {
+            background-color: #3B82F6;
+            color: white;
+            padding: 0.4rem 0.8rem;
+            border-radius: 0.5rem;
+            font-size: 0.8rem;
+            margin-top: 0.75rem;
+            display: inline-block;
+            transition: background-color 0.2s;
+        }
+
+        .product-card .add-to-cart-button:hover {
+            background-color: #2563EB;
+        }
+    </style>
+</head>
+<body>
+    <div class="mobile-frame">
+        <!-- Cabeçalho do Aplicativo: Título e Ícones de Ação -->
+        <div class="header" id="appHeader">
+            <h1 class="text-2xl font-bold">PetSmartCare</h1>
+            <div class="flex items-center gap-4">
+                <i class="fas fa-bell text-xl cursor-pointer"></i>
+                <i class="fas fa-cog text-xl cursor-pointer"></i> <!-- Ícone de Configurações -->
+                <i class="fas fa-user-circle text-2xl cursor-pointer" onclick="showPage('profilePage', this)"></i> <!-- Ícone de Perfil -->
+            </div>
+        </div>
+
+        <!-- Área de Conteúdo Principal, onde as "páginas" são exibidas -->
+        <div class="content-area" id="contentArea">
+            <!-- Página de Login (inicialmente visível) -->
+            <div id="loginPage" class="page text-center">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4 mt-8">Bem-vindo(a)!</h2>
+                <p class="text-gray-600 mb-8 px-4">Faça login para monitorar e cuidar do seu pet com inteligência.</p>
+
+                <!-- Grupo de Input de E-mail -->
+                <div class="input-group">
+                    <label for="email" class="block text-gray-700 text-sm font-bold mb-2 text-left">E-mail:</label>
+                    <input type="email" id="email" class="shadow appearance-none border border-gray-300 rounded-xl w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-300" placeholder="seu@email.com">
+                </div>
+                <!-- Grupo de Input de Senha -->
+                <div class="input-group mb-6">
+                    <label for="password" class="block text-gray-700 text-sm font-bold mb-2 text-left">Senha:</label>
+                    <input type="password" id="password" class="shadow appearance-none border border-gray-300 rounded-xl w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-300" placeholder="********">
+                </div>
+
+                <!-- Botão de Entrar -->
+                <button class="button-primary button-full-width py-3" onclick="doLogin()">Entrar</button>
+
+                <!-- Divisor "OU" -->
+                <div class="flex items-center w-full my-8 px-4">
+                    <div class="flex-grow border-t border-gray-300"></div>
+                    <span class="flex-shrink mx-4 text-gray-500 text-sm font-medium">OU</span>
+                    <div class="flex-grow border-t border-gray-300"></div>
+                </div>
+
+                <!-- Botão de Entrar com Google -->
+                <button class="w-full py-3 px-4 bg-white border border-gray-300 rounded-xl font-semibold text-gray-700 flex items-center justify-center gap-3 shadow-sm hover:bg-gray-50 transition-colors button-full-width" onclick="doLogin()">
+                    <i class="fab fa-google text-lg text-red-600"></i> Entrar com Google
+                </button>
+
+                <p class="text-sm text-gray-600 mt-6 mb-4">
+                    Ainda não tem conta? <a href="#" class="text-blue-700 font-semibold hover:underline">Cadastre-se</a>
+                </p>
+                <p class="text-sm text-blue-700 font-semibold hover:underline cursor-pointer">Esqueceu a senha?</p>
+            </div>
+
+            <!-- Página Inicial (Home): Visão geral do pet e ações rápidas (oculta por padrão) -->
+            <div id="homePage" class="page hidden-page">
+                <!-- Seção de Perfil do Pet -->
+                <div class="flex items-center gap-4 p-4 mb-6 bg-blue-50 rounded-xl shadow-sm border border-blue-200">
+                    <!-- Imagem de perfil do pet (placeholder) -->
+                    <img src="https://placehold.co/90x90/3B82F6/ffffff?text=PET" alt="Foto do Pet" class="w-24 h-24 rounded-full object-cover border-4 border-blue-300 shadow-md">
+                    <div>
+                        <h2 class="text-2xl font-bold text-gray-800">Olá, Tutor!</h2>
+                        <p class="text-base text-gray-600">Seu companheiro: <span class="font-semibold text-blue-700">Luna</span></p>
+                        <p class="text-sm text-gray-500 mt-1">Status da coleira: <span class="font-semibold text-green-600">Conectado</span></p>
+                    </div>
+                </div>
+
+                <!-- Novo Banner da Coleira PetSmartCare -->
+                <div class="collar-banner">
+                    <img src="https://placehold.co/80x80/34D399/ffffff?text=COLEIRA" alt="Imagem da Coleira PetSmartCare">
+                    <div class="collar-banner-content flex-grow">
+                        <h4>Coleira PetSmartCare Pro!</h4>
+                        <p>Monitore a saúde e localização do seu pet com tecnologia avançada.</p>
+                        <a href="#" class="collar-banner-button">Saiba Mais</a>
+                    </div>
+                </div>
+
+                <!-- Card de Alerta de Vacina (Modificado para notificação) -->
+                <div class="alert-card">
+                    <i class="fas fa-syringe"></i> <!-- Ícone de seringa para vacina -->
+                    <div>
+                        <p class="font-semibold">Vacina da Luna Agendada!</p>
+                        <p>A vacina anual da Luna (V8) está agendada para amanhã, 26/06/2025, às 14:00h na Clínica VetAmor.</p>
+                        <button class="text-blue-700 text-sm font-semibold mt-2" onclick="showModal('agendamentoModal')">Reagendar / Ver detalhes</button>
+                    </div>
+                </div>
+
+                <h3 class="text-xl font-bold text-gray-700 mb-4">Localização dos Seus Pets</h3>
+                <!-- Container do Mapa Simulado -->
+                <div class="map-container relative">
+                    [Image of a map indicating pet location]
+                    <img src="https://placehold.co/400x250/E0E0E0/607D8B?text=MAPA+DE+LOCALIZA%C3%87%C3%83O" alt="Mapa de localização dos pets" class="absolute inset-0 w-full h-full object-cover rounded-xl">
+                    <!-- Marcador Pet 1 -->
+                    <div class="absolute" style="top: 30%; left: 20%;">
+                        <i class="fas fa-map-marker-alt text-red-500 text-3xl drop-shadow-md"></i>
+                        <span class="absolute -top-6 left-1/2 -translate-x-1/2 bg-white text-gray-800 text-xs font-semibold px-2 py-1 rounded-full shadow">Luna</span>
+                    </div>
+                    <!-- Marcador Pet 2 -->
+                    <div class="absolute" style="top: 60%; left: 70%;">
+                        <i class="fas fa-map-marker-alt text-green-500 text-3xl drop-shadow-md"></i>
+                        <span class="absolute -top-6 left-1/2 -translate-x-1/2 bg-white text-gray-800 text-xs font-semibold px-2 py-1 rounded-full shadow">Max</span>
+                    </div>
+                </div>
+                <!-- Lista de Pets com Localização -->
+                <div class="card mb-6">
+                    <h4 class="font-semibold text-gray-800 mb-3">Últimas Localizações:</h4>
+                    <ul class="list-none p-0 text-sm">
+                        <li class="flex justify-between items-center mb-2 pb-2 border-b border-gray-200 last:border-b-0">
+                            <span class="font-medium text-gray-700">Luna:</span>
+                            <span class="text-gray-600">Parque Central (agora)</span>
+                            <i class="fas fa-dog text-blue-500 ml-2"></i>
+                        </li>
+                        <li class="flex justify-between items-center">
+                            <span class="font-medium text-gray-700">Max:</span>
+                            <span class="text-gray-600">Casa da Vovó (há 1h)</span>
+                            <i class="fas fa-cat text-blue-500 ml-2"></i>
+                        </li>
+                    </ul>
+                </div>
+
+
+                <h3 class="text-xl font-bold text-gray-700 mb-4">Monitoramento Detalhado da Luna</h3>
+                <!-- Grid de Métricas de Saúde -->
+                <div class="grid grid-cols-2 gap-4 mb-6">
+                    <div class="card flex flex-col items-center p-4">
+                        <i class="fas fa-heartbeat text-4xl text-red-500 mb-2"></i>
+                        <p class="text-base font-semibold text-gray-700">Batimentos</p>
+                        <p class="text-2xl font-extrabold text-gray-900">78 <span class="text-lg font-semibold">bpm</span></p>
+                    </div>
+                    <div class="card flex flex-col items-center p-4">
+                        <i class="fas fa-temperature-high text-4xl text-orange-500 mb-2"></i>
+                        <p class="text-base font-semibold text-gray-700">Temperatura</p>
+                        <p class="text-2xl font-extrabold text-gray-900">38.2<span class="text-lg font-semibold">°C</span></p>
+                    </div>
+                    <div class="card flex flex-col items-center p-4">
+                        <i class="fas fa-walking text-4xl text-green-500 mb-2"></i>
+                        <p class="text-base font-semibold text-gray-700">Atividade</p>
+                        <p class="text-2xl font-extrabold text-gray-900">Média</p>
+                    </div>
+                    <div class="card flex flex-col items-center p-4">
+                        <i class="fas fa-lightbulb text-4xl text-yellow-500 mb-2"></i>
+                        <p class="text-base font-semibold text-gray-700">Humor</p>
+                        <p class="text-2xl font-extrabold text-gray-900">Brincalhão</p>
+                    </div>
+                </div>
+
+                <!-- Botões de Ação Rápida -->
+                <div class="grid grid-cols-1 gap-4">
+                    <button class="button-primary flex items-center justify-center gap-3" onclick="showModal('agendamentoModal')">
+                        <i class="fas fa-calendar-alt"></i> Agendar Serviço Pet
+                    </button>
+                    <button class="button-primary bg-green-500 hover:bg-green-600 shadow-md shadow-green-200 flex items-center justify-center gap-3" onclick="showModal('vetChatModal')">
+                        <i class="fas fa-user-md"></i> Chat com Veterinário
+                    </button>
+                </div>
+            </div>
+
+            <!-- Página da Loja (agora para Produtos) -->
+            <div id="shopPage" class="page hidden-page">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">Loja PetSmartCare</h2>
+                <p class="text-gray-600 mb-6">Encontre tudo o que seu pet precisa!</p>
+
+                <!-- Seção de Banners -->
+                <div class="shop-banner">
+                    Ofertas Exclusivas para Você!
+                </div>
+                <div class="shop-banner" style="background-image: url('https://placehold.co/400x150/FFD1DC/FF69B4?text=NOVIDADES+PET');">
+                    Novidades Imperdíveis!
+                </div>
+
+                <h3 class="text-xl font-bold text-gray-700 mt-6 mb-4">Produtos em Destaque</h3>
+                <div class="product-grid">
+                    <!-- Produto 1 -->
+                    <div class="product-card">
+                        <img src="https://placehold.co/150x120/BDDFFF/3B82F6?text=RA%C3%87%C3%83O" alt="Ração Premium">
+                        <span class="product-name">Ração Premium para Cães</span>
+                        <span class="product-price">R$ 89,90</span>
+                        <button class="add-to-cart-button">Adicionar</button>
+                    </div>
+                    <!-- Produto 2 -->
+                    <div class="product-card">
+                        <img src="https://placehold.co/150x120/FFD9B2/FF8C00?text=BRINQUEDO" alt="Brinquedo Interativo">
+                        <span class="product-name">Brinquedo Interativo Gatos</span>
+                        <span class="product-price">R$ 29,90</span>
+                        <button class="add-to-cart-button">Adicionar</button>
+                    </div>
+                    <!-- Produto 3 -->
+                    <div class="product-card">
+                        <img src="https://placehold.co/150x120/D1FFBD/66BB6A?text=SHAMPOO" alt="Shampoo Antialérgico">
+                        <span class="product-name">Shampoo Antialérgico Pet</span>
+                        <span class="product-price">R$ 45,00</span>
+                        <button class="add-to-cart-button">Adicionar</button>
+                    </div>
+                    <!-- Produto 4 -->
+                    <div class="product-card">
+                        <img src="https://placehold.co/150x120/C4E0FF/1E90FF?text=CAMA" alt="Cama Ortopédica">
+                        <span class="product-name">Cama Ortopédica Grande</span>
+                        <span class="product-price">R$ 180,00</span>
+                        <button class="add-to-cart-button">Adicionar</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Nova Página de Serviços de Parceiros -->
+            <div id="partnerServicesPage" class="page hidden-page">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">Serviços para o seu Pet</h2>
+                <p class="text-gray-600 mb-6">Agende os melhores serviços com nossos parceiros de confiança.</p>
+
+                <div class="card flex items-center gap-4 mb-4">
+                    <i class="fas fa-clinic-medical text-4xl text-blue-600"></i>
+                    <div>
+                        <h3 class="font-bold text-lg">Clínicas Veterinárias</h3>
+                        <p class="text-sm text-gray-600">Encontre a clínica mais próxima.</p>
+                        <button class="text-blue-700 text-sm font-semibold mt-2" onclick="showModal('agendamentoModal')">Agendar Consulta</button>
+                    </div>
+                </div>
+
+                <div class="card flex items-center gap-4 mb-4">
+                    <i class="fas fa-cut text-4xl text-pink-600"></i>
+                    <div>
+                        <h3 class="font-bold text-lg">Banho e Tosa</h3>
+                        <p class="text-sm text-gray-600">Deixe seu pet sempre lindo e cheiroso.</p>
+                        <button class="text-blue-700 text-sm font-semibold mt-2" onclick="showModal('agendamentoModal')">Agendar Banho</button>
+                    </div>
+                </div>
+
+                <div class="card flex items-center gap-4">
+                    <i class="fas fa-truck text-4xl text-yellow-600"></i> <!-- Ícone de entrega/transporte -->
+                    <div>
+                        <h3 class="font-bold text-lg">Transporte de Pets</h3>
+                        <p class="text-sm text-gray-600">Serviço de leva e traz para consultas e banhos.</p>
+                        <button class="text-blue-700 text-sm font-semibold mt-2" onclick="showModal('agendamentoModal')">Solicitar</button>
+                    </div>
+                </div>
+
+                <div class="card flex items-center gap-4 mt-4">
+                    <i class="fas fa-hotel text-4xl text-purple-600"></i> <!-- Ícone de hotel/hospedagem -->
+                    <div>
+                        <h3 class="font-bold text-lg">Hospedagem e Creche</h3>
+                        <p class="text-sm text-gray-600">Cuidados e diversão enquanto você está fora.</p>
+                        <button class="text-blue-700 text-sm font-semibold mt-2" onclick="showModal('agendamentoModal')">Reservar</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Página de Histórico -->
+            <div id="historyPage" class="page hidden-page">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">Histórico de Saúde</h2>
+                <p class="text-gray-600 mb-6">Acompanhe a linha do tempo da saúde do seu pet.</p>
+
+                <div class="card mb-4">
+                    <h3 class="font-bold text-lg mb-2">Luna</h3>
+                    <ul class="list-none p-0 text-sm text-gray-700">
+                        <li class="mb-2 pb-2 border-b border-gray-200 last:border-b-0">
+                            <span class="font-semibold text-gray-800">25/06/2025:</span> Alerta de Atividade Baixa
+                        </li>
+                        <li class="mb-2 pb-2 border-b border-gray-200 last:border-b-0">
+                            <span class="font-semibold text-gray-800">10/06/2025:</span> Consulta Veterinária (Check-up) - Clínica VetAmor
+                        </li>
+                        <li class="mb-2 pb-2 border-b border-gray-200 last:border-b-0">
+                            <span class="font-semibold text-gray-800">01/05/2025:</span> Vacina V8 - Dr. Pet
+                        </li>
+                        <li class="mb-2 pb-2 border-b border-gray-200 last:border-b-0">
+                            <span class="font-semibold text-gray-800">15/04/2025:</span> Banho e Tosa - PetShop Feliz
+                        </li>
+                    </ul>
+                </div>
+
+                <button class="button-primary w-full flex items-center justify-center gap-3">
+                    <i class="fas fa-file-pdf"></i> Gerar Relatório de Saúde
+                </button>
+            </div>
+
+            <!-- Página InstaDog -->
+            <div id="instaDogPage" class="page hidden-page">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">InstaDog</h2>
+                <p class="text-gray-600 mb-6">Compartilhe os momentos mais fofos do seu pet!</p>
+
+                <!-- Nova Postagem de Cão Perdido -->
+                <div class="insta-post">
+                    <div class="insta-post-header">
+                        <img src="https://placehold.co/40x40/FF0000/FFFFFF?text=!" alt="Ícone de Alerta">
+                        <span class="font-semibold text-red-600">ALERTA: Cão Perdido!</span>
+                    </div>
+                    <img src="https://placehold.co/400x250/FF6347/FFFFFF?text=CACHORRO+PERDIDO" alt="Cachorro Perdido">
+                    <div class="insta-post-caption">
+                        <span class="username text-red-600">URGENTE!</span> Minha Golden Retriever, Luna, está perdida desde as 10h de hoje no Parque Central. Ela usa uma coleira azul. Se a vir, por favor, entre em contato: (XX) XXXX-XXXX. Agradeço qualquer ajuda! #cachorroperdido #goldenretriever #ajuda #petperdido #ParqueCentral
+                    </div>
+                    <div class="insta-post-actions">
+                        <div class="icon-group">
+                            <i class="far fa-heart" onclick="toggleLike(this, 'likesLostDog')"></i>
+                            <span id="likesLostDog" class="like-count">500 curtidas</span>
+                        </div>
+                        <i class="fas fa-flag text-gray-500 cursor-pointer hover:text-red-500" onclick="showModal('reportPostModal')"></i>
+                    </div>
+                </div>
+
+                <!-- Postagem de Exemplo 1 (original) -->
+                <div class="insta-post">
+                    <div class="insta-post-header">
+                        <img src="https://placehold.co/40x40/64748B/ffffff?text=L" alt="Foto de perfil Luna">
+                        <span class="font-semibold text-gray-800">Luna.the.Golden</span>
+                    </div>
+                    <img src="https://placehold.co/400x250/FCA5A5/FFFFFF?text=LUNA+NO+PARQUE" alt="Foto da Luna">
+                    <div class="insta-post-caption">
+                        <span class="username">Luna.the.Golden</span> Dia de sol perfeito no parque! 🐾☀️ #goldenretriever #vidapet #parque
+                    </div>
+                    <div class="insta-post-actions">
+                        <div class="icon-group">
+                            <i class="far fa-heart" onclick="toggleLike(this, 'likes1')"></i>
+                            <span id="likes1" class="like-count">125 curtidas</span>
+                        </div>
+                        <i class="fas fa-flag text-gray-500 cursor-pointer hover:text-red-500" onclick="showModal('reportPostModal')"></i>
+                    </div>
+                </div>
+
+                <!-- Postagem de Exemplo 2 (original) -->
+                <div class="insta-post">
+                    <div class="insta-post-header">
+                        <img src="https://placehold.co/40x40/64748B/ffffff?text=M" alt="Foto de perfil Max">
+                        <span class="font-semibold text-gray-800">Max.o.Siamês</span>
+                    </div>
+                    <img src="https://placehold.co/400x250/BFDBFE/FFFFFF?text=MAX+DORMINDO" alt="Foto do Max">
+                    <div class="insta-post-caption">
+                        <span class="username">Max.o.Siamês</span> A arte de tirar um cochilo perfeito 😴 #gatosfofos #siamês #soninho
+                    </div>
+                    <div class="insta-post-actions">
+                        <div class="icon-group">
+                            <i class="far fa-heart" onclick="toggleLike(this, 'likes2')"></i>
+                            <span id="likes2" class="like-count">88 curtidas</span>
+                        </div>
+                        <i class="fas fa-flag text-gray-500 cursor-pointer hover:text-red-500" onclick="showModal('reportPostModal')"></i>
+                    </div>
+                </div>
+
+                <button class="button-primary w-full flex items-center justify-center gap-3">
+                    <i class="fas fa-plus-circle"></i> Fazer Nova Postagem
+                </button>
+            </div>
+
+            <!-- Página de Perfil -->
+            <div id="profilePage" class="page hidden-page">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">Meu Perfil</h2>
+
+                <div class="card text-center p-6 mb-6">
+                    <img src="https://placehold.co/100x100/3B82F6/ffffff?text=USER" alt="Avatar do Utilizador" class="w-28 h-28 rounded-full mx-auto mb-4 border-4 border-blue-300 shadow-md">
+                    <h3 class="text-xl font-bold text-gray-800">Denym Silva</h3>
+                    <p class="text-base text-gray-600 mb-4">denym.silva@email.com</p>
+                    <button class="button-primary text-sm px-4 py-2 w-full">Editar Perfil</button>
+                </div>
+
+                <h3 class="text-xl font-bold text-gray-700 mb-4">Meus Pets</h3>
+                <div class="grid grid-cols-1 gap-3">
+                    <div class="card flex items-center gap-4">
+                        <img src="https://placehold.co/70x70/3B82F6/ffffff?text=LUNA" alt="Foto da Luna" class="w-20 h-20 rounded-full object-cover border-2 border-blue-200">
+                        <div>
+                            <p class="font-bold text-lg text-gray-800">Luna</p>
+                            <p class="text-sm text-gray-600">Golden Retriever, 3 anos</p>
+                            <button class="text-blue-700 text-sm font-semibold mt-2">Ver Detalhes</button>
+                        </div>
+                    </div>
+                    <div class="card flex items-center gap-4">
+                        <img src="https://placehold.co/70x70/3B82F6/ffffff?text=MAX" alt="Foto do Max" class="w-20 h-20 rounded-full object-cover border-2 border-blue-200">
+                        <div>
+                            <p class="font-bold text-lg text-gray-800">Max</p>
+                            <p class="text-sm text-gray-600">Gato Siamês, 5 anos</p>
+                            <button class="text-blue-700 text-sm font-semibold mt-2">Ver Detalhes</button>
+                        </div>
+                    </div>
+                    <button class="button-primary bg-gray-200 text-gray-700 hover:bg-gray-300 shadow-none flex items-center justify-center gap-2 mt-4">
+                        <i class="fas fa-plus-circle"></i> Adicionar Novo Pet
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Barra de Navegação Inferior -->
+        <div class="nav-bar" id="appNavBar">
+            <div class="nav-item active" onclick="showPage('homePage', this)">
+                <i class="fas fa-home"></i>
+                <span>Início</span>
+            </div>
+            <div class="nav-item" onclick="showPage('shopPage', this)">
+                <i class="fas fa-store"></i>
+                <span>Loja</span>
+            </div>
+            <div class="nav-item" onclick="showPage('partnerServicesPage', this)">
+                <i class="fas fa-handshake"></i> <!-- Novo ícone para serviços/parcerias -->
+                <span>Serviços</span>
+            </div>
+            <div class="nav-item" onclick="showPage('instaDogPage', this)">
+                <i class="fas fa-camera"></i>
+                <span>InstaDog</span>
+            </div>
+            <div class="nav-item" onclick="showPage('historyPage', this)">
+                <i class="fas fa-history"></i>
+                <span>Histórico</span>
+            </div>
+        </div>
+
+        <!-- Modais: Agendamento e Chat com Veterinário -->
+        <div id="modalOverlay" class="modal-overlay">
+            <!-- Modal de Agendamento Genérico -->
+            <div id="agendamentoModal" class="modal-content hidden-page">
+                <div class="modal-header">
+                    <h3 class="text-blue-700">Agendamento</h3>
+                    <button class="modal-close-btn" onclick="hideModal()">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <p>Qual serviço você gostaria de agendar para o seu pet?</p>
+                    <select class="w-full p-3 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-blue-300">
+                        <option>Consulta Veterinária</option>
+                        <option>Banho e Tosa</option>
+                        <option>Vacinação</option>
+                        <option>Outros</option>
+                    </select>
+                    <p class="text-sm text-gray-500">Nossa equipa entrará em contacto para confirmar detalhes e horários.</p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn-secondary" onclick="hideModal()">Cancelar</button>
+                    <button class="button-primary" onclick="showConfirmationMessage('Solicitação de Agendamento Enviada!')">Confirmar</button>
+                </div>
+            </div>
+
+            <!-- Modal de Chat com Veterinário -->
+            <div id="vetChatModal" class="modal-content hidden-page">
+                <div class="modal-header">
+                    <h3 class="text-blue-700">Chat com Veterinário</h3>
+                    <button class="modal-close-btn" onclick="hideModal()">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <p>Deseja iniciar um chat com um veterinário disponível agora?</p>
+                    <p class="text-sm text-gray-500">Você será conectado(a) com um profissional para tirar suas dúvidas.</p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn-secondary" onclick="hideModal()">Agora Não</button>
+                    <button class="button-primary" onclick="showConfirmationMessage('Iniciando Chat com Veterinário...')">Iniciar Chat</button>
+                </div>
+            </div>
+
+            <!-- Modal de Confirmação Genérico -->
+            <div id="confirmationMessageModal" class="modal-content hidden-page">
+                <div class="modal-header">
+                    <h3 id="confirmationMessageTitle" class="text-blue-700"></h3>
+                    <button class="modal-close-btn" onclick="hideModal()">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <p id="confirmationMessageText" class="text-center text-lg font-semibold text-blue-700"></p>
+                </div>
+                <div class="modal-footer">
+                    <button class="button-primary w-full" onclick="hideModal()">Fechar</button>
+                </div>
+            </div>
+
+            <!-- Modal de Denúncia de Postagem InstaDog -->
+            <div id="reportPostModal" class="modal-content hidden-page">
+                <div class="modal-header">
+                    <h3 class="text-red-700">Denunciar Postagem</h3>
+                    <button class="modal-close-btn" onclick="hideModal()">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <p>Tem certeza que deseja denunciar esta postagem?</p>
+                    <textarea class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-300" rows="3" placeholder="Motivo da denúncia (opcional)"></textarea>
+                    <p class="text-sm text-gray-500 mt-2">A sua denúncia será analisada pela nossa equipa.</p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn-secondary" onclick="hideModal()">Cancelar</button>
+                    <button class="button-primary bg-red-600 hover:bg-red-700" onclick="showConfirmationMessage('Postagem Denunciada!')">Denunciar</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script>
-        function redirectToStore() {
-            const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+        // Função para alternar o estado de "curtido" e a contagem de curtidas
+        function toggleLike(iconElement, likesId) {
+            const likesSpan = document.getElementById(likesId);
+            let currentLikes = parseInt(likesSpan.innerText.split(' ')[0]);
 
-            if (/android/i.test(userAgent)) {
-                window.location.href = "https://play.google.com/store/apps/details?id=br.com.ae3tecnologia.enrollment_fetec";
-            } else if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
-                window.location.href = "https://apps.apple.com/br/app/matr%C3%ADcula-online-fetec/id6741228997?l=en-GB";
+            if (iconElement.classList.contains('fa-solid')) { // Já curtiu
+                iconElement.classList.remove('fa-solid', 'liked');
+                iconElement.classList.add('far'); // Coração vazio
+                currentLikes--;
+            } else { // Não curtiu
+                iconElement.classList.remove('far');
+                iconElement.classList.add('fa-solid', 'liked'); // Coração preenchido e cor vermelha
+                currentLikes++;
+            }
+            likesSpan.innerText = `${currentLikes} curtidas`;
+        }
+
+        // Função para mostrar uma página específica e gerenciar o estado da navegação
+        function showPage(pageId, clickedNavItem = null) {
+            console.log(`[showPage] Chamada para exibir: ${pageId}`);
+
+            // Oculta todas as páginas do aplicativo
+            document.querySelectorAll('.page').forEach(page => {
+                if (!page.classList.contains('hidden-page')) {
+                    page.classList.add('hidden-page');
+                    console.log(`[showPage] Escondendo página: ${page.id}`);
+                }
+            });
+            // Mostra a página solicitada
+            const targetPage = document.getElementById(pageId);
+            if (targetPage) {
+                targetPage.classList.remove('hidden-page');
+                console.log(`[showPage] Exibindo página: ${pageId}`);
             } else {
-                window.location.href = "https://matriculaonline.boavista.rr.gov.br/";
+                console.error(`[showPage] Página com ID ${pageId} não encontrada!`);
+            }
+
+            // Controla a visibilidade do cabeçalho e da barra de navegação
+            const appHeader = document.getElementById('appHeader');
+            const appNavBar = document.getElementById('appNavBar');
+
+            if (pageId === 'loginPage') {
+                if (appHeader) {
+                    appHeader.classList.add('hidden-page');
+                    console.log('[showPage] Escondendo cabeçalho.');
+                }
+                if (appNavBar) {
+                    appNavBar.classList.add('hidden-page');
+                    console.log('[showPage] Escondendo barra de navegação.');
+                }
+            } else {
+                if (appHeader) {
+                    appHeader.classList.remove('hidden-page');
+                    console.log('[showPage] Exibindo cabeçalho.');
+                }
+                if (appNavBar) {
+                    appNavBar.classList.remove('hidden-page');
+                    console.log('[showPage] Exibindo barra de navegação.');
+                }
+            }
+
+            // Atualiza o estado "ativo" da barra de navegação
+            // Apenas atualiza se a barra de navegação não estiver oculta
+            if (appNavBar && !appNavBar.classList.contains('hidden-page')) {
+                document.querySelectorAll('.nav-item').forEach(item => {
+                    item.classList.remove('active');
+                });
+                if (clickedNavItem) {
+                    // Verifica se o span existe antes de tentar acessar innerText
+                    const spanElement = clickedNavItem.querySelector('span');
+                    if (spanElement) {
+                        console.log(`[showPage] Item de navegação ativo: ${spanElement.innerText}`);
+                    } else {
+                        console.log(`[showPage] Item de navegação ativo (span não encontrado): ${clickedNavItem.id}`);
+                    }
+                    clickedNavItem.classList.add('active');
+                }
             }
         }
 
-        document.addEventListener("DOMContentLoaded", redirectToStore);
-    </script>
+        // Função para simular o login e mostrar a tela principal
+        function doLogin() {
+            console.log('[doLogin] Tentando fazer login...');
+            const loginPage = document.getElementById('loginPage');
+            if (loginPage) {
+                loginPage.remove(); // Remove a tela de login do DOM
+                console.log('[doLogin] Tela de login removida do DOM.');
+            }
 
-</head>
-<body>
-<h1>Você está sendo redirecionado para a loja...</h1>
+            // A função showPage agora gerencia a visibilidade do topo e do menu inferior
+            showPage('homePage', document.querySelector('#appNavBar .nav-item:first-child'));
+            console.log('[doLogin] Login simulado completo. Verifique o console para a transição de páginas.');
+        }
+
+        // Função para mostrar um modal (overlay sobre o conteúdo)
+        function showModal(modalId) {
+            const overlay = document.getElementById('modalOverlay');
+            // Oculta todos os modais para garantir que apenas um esteja visível por vez
+            document.querySelectorAll('.modal-content').forEach(modal => {
+                modal.classList.add('hidden-page');
+            });
+            // Mostra o modal solicitado
+            document.getElementById(modalId).classList.remove('hidden-page');
+            overlay.classList.add('active'); /* Ativa a visibilidade do overlay */
+        }
+
+        // Função para ocultar o modal ativo
+        function hideModal() {
+            const overlay = document.getElementById('modalOverlay');
+            overlay.classList.remove('active'); /* Desativa a visibilidade do overlay */
+            // Oculta o conteúdo do modal após a transição do overlay (para suavidade)
+            setTimeout(() => {
+                document.querySelectorAll('.modal-content').forEach(modal => {
+                    modal.classList.add('hidden-page');
+                });
+            }, 300); /* Tempo da transição CSS */
+        }
+
+        // Função para exibir mensagens de confirmação em um modal genérico
+        function showConfirmationMessage(message) {
+            document.getElementById('confirmationMessageText').innerText = message;
+            document.getElementById('confirmationMessageTitle').innerText = "Sucesso!";
+            hideModal(); /* Oculta qualquer modal atualmente aberto */
+            setTimeout(() => {
+                showModal('confirmationMessageModal'); /* Mostra o modal de confirmação */
+            }, 300); /* Atraso para evitar sobreposição de transições */
+        }
+
+        // Inicializa o protótipo: mostra a página de login ao carregar
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('[DOMContentLoaded] Inicializando protótipo...');
+            // Garante que todas as páginas, exceto a de login, estejam ocultas no início
+            document.querySelectorAll('.page').forEach(page => {
+                if (page.id !== 'loginPage') {
+                    page.classList.add('hidden-page');
+                }
+            });
+            // Oculta o cabeçalho e a barra de navegação no início, pois a página de login é a primeira
+            const appHeader = document.getElementById('appHeader');
+            const appNavBar = document.getElementById('appNavBar');
+            if (appHeader) appHeader.classList.add('hidden-page');
+            if (appNavBar) appNavBar.classList.add('hidden-page');
+
+            showPage('loginPage'); // Inicia na página de login
+            console.log('[DOMContentLoaded] Carregamento inicial completo. Tela de login visível.');
+        });
+    </script>
 </body>
 </html>
